@@ -39,4 +39,16 @@ Authentication is Django's own; the signed-in user's id is the dpdpkit principal
 cd examples/django-school && DATABASE_NAME=:memory: pytest -q
 ```
 
-The dpdpkit conformance suite against this app is tracked as DJ-09.
+## Conformance
+
+The dpdpkit conformance suite (dpdpkit-spec) runs in-process against this app. `DPDPKIT_CONFORMANCE=1` swaps in
+header-based test auth (`X-DPDP-Test-Principal`, `X-DPDP-Test-Role`) and exempts CSRF; never set it in production.
+`pytest-django` is switched off for the run because the suite talks to the real database.
+
+```bash
+pip install "dpdpkit-conformance[asgi] @ git+https://github.com/dpdpkit-dev/dpdpkit-spec@main"
+cd examples/django-school
+DPDPKIT_CONFORMANCE=1 DPDPKIT_ASGI_APP=school.asgi:application dpdpkit-conformance -q -p no:django
+```
+
+Set `DATABASE_URL` (`postgres://…` or `mysql://…`) to run against those databases; the default is a SQLite file.

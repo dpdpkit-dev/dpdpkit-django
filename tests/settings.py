@@ -1,4 +1,5 @@
 import os
+from urllib.parse import unquote, urlparse
 
 SECRET_KEY = "test"
 INSTALLED_APPS = [
@@ -29,7 +30,22 @@ TEMPLATES = [
         },
     }
 ]
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.environ.get("DPDPKIT_TEST_DB", ":memory:")}}
+_url = urlparse(os.environ.get("DPDPKIT_TEST_DATABASE_URL", ""))
+if _url.scheme in ("postgres", "postgresql", "mysql"):  # the CI database matrix
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends." + ("mysql" if _url.scheme == "mysql" else "postgresql"),
+            "NAME": _url.path.lstrip("/"),
+            "USER": unquote(_url.username or ""),
+            "PASSWORD": unquote(_url.password or ""),
+            "HOST": _url.hostname or "",
+            "PORT": str(_url.port or ""),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.environ.get("DPDPKIT_TEST_DB", ":memory:")}
+    }
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 USE_TZ = True
 ROOT_URLCONF = "tests.urls_plain"

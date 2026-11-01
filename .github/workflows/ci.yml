@@ -33,7 +33,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.13"]
+        include:
+          - {python: "3.10", django: "4.2.*", db: sqlite}
+          - {python: "3.10", django: "4.2.*", db: postgres}
+          - {python: "3.10", django: "4.2.*", db: mysql}
+          - {python: "3.13", django: "5.*", db: sqlite}
+          - {python: "3.13", django: "5.*", db: postgres}
+          - {python: "3.13", django: "5.*", db: mysql}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: dpdpkit
+          POSTGRES_DB: dpdpkit
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: dpdpkit
+          MYSQL_DATABASE: dpdpkit
+        ports: ["3306:3306"]
+        options: --health-cmd "mysqladmin ping -pdpdpkit" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: >-
+        ${{ matrix.db == 'postgres' && 'postgres://postgres:dpdpkit@localhost:5432/dpdpkit'
+         || matrix.db == 'mysql' && 'mysql://root:dpdpkit@127.0.0.1:3306/dpdpkit'
+         || '' }}
+      DPDPKIT_TEST_DATABASE_URL: >-
+        ${{ matrix.db == 'postgres' && 'postgres://postgres:dpdpkit@localhost:5432/dpdpkit'
+         || matrix.db == 'mysql' && 'mysql://root:dpdpkit@127.0.0.1:3306/dpdpkit'
+         || '' }}
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v7
@@ -41,11 +71,9 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install
         run: |
+          sudo apt-get update && sudo apt-get install -y libmysqlclient-dev pkg-config
           uv venv
-          uv pip install \
-            "dpdpkit-policies @ git+https://github.com/dpdpkit-dev/dpdpkit-policies@main" \
-            "dpdpkit-core @ git+https://github.com/dpdpkit-dev/dpdpkit-core@main" \
-            -e ".[dev]"
+          uv pip install             "dpdpkit-policies @ git+https://github.com/dpdpkit-dev/dpdpkit-policies@main"             "dpdpkit-core @ git+https://github.com/dpdpkit-dev/dpdpkit-core@main"             "dpdpkit-conformance[asgi] @ git+https://github.com/dpdpkit-dev/dpdpkit-spec@main"             "django==${{ matrix.django }}"             -e ".[dev,postgres,mysql]"
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
       - run: pytest -q
       - name: Example app (examples/django-school)
@@ -53,3 +81,9 @@ jobs:
         env:
           DATABASE_NAME: ":memory:"
         run: pytest -q
+      - name: Conformance suite against examples/django-school
+        working-directory: examples/django-school
+        env:
+          DPDPKIT_CONFORMANCE: "1"
+          DPDPKIT_ASGI_APP: school.asgi:application
+        run: dpdpkit-conformance -q -p no:django

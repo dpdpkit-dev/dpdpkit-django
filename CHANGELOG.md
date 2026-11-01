@@ -6,6 +6,10 @@ first working release.
 ## Unreleased
 
 ### Added
+- The dpdpkit conformance suite passes against `examples/django-school` (`school.asgi:application` with
+  `DPDPKIT_CONFORMANCE=1`). CI now runs it, the unit tests and the example tests on Django 4.2 and 5.x against
+  SQLite, Postgres and MySQL; `DATABASE_URL` selects the example's database, `DPDPKIT_TEST_DATABASE_URL` the unit
+  tests'. New extras `postgres` and `mysql`.
 - `examples/django-school`: an ed-tech demo with a child-account flow. Learners under 18 sign up with a guardian's
   details and get no consent until the guardian opens a signed, expiring link and chooses for them (recorded under
   the child's principal with `source="guardian"`; marketing and usage-analytics purposes are never offered). The
