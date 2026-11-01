@@ -6,6 +6,11 @@ first working release.
 ## Unreleased
 
 ### Added
+- `PersonalDataRegistry` (and the project-wide `dpdpkit.django.registry.registry`): register models with a
+  per-field strategy of `delete`, `anonymise` (default placeholder or your own `callable(row)`) or `retain_legal`
+  (needs a `retain_reason`), or delete whole rows. `erase(principal, purposes)` runs atomically and returns a report
+  per model; `attach(kit)` makes the kit's retention runs and erasure requests use it; `describe()` lists the
+  registered fields.
 - `@requires_consent(*purposes)` for function views (sync or async) and `RequiresConsentMixin` for class-based
   views. A caller who is not signed in gets 401 `unauthenticated`; one without consent gets 403 `consent_required`
   with the purpose in `details`. Pass `on_denied=` (or override `consent_denied`) to answer differently, for example
