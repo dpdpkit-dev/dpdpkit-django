@@ -22,6 +22,7 @@ from dpdpkit.errors import ConfigError
 from dpdpkit.models import Role
 
 from .repository import DjangoRepository
+from .signals import connect_kit
 
 log = logging.getLogger("dpdpkit.django")
 
@@ -36,12 +37,15 @@ def set_kit(kit: Kit | None) -> None:
     """Use ``kit`` for the REST views (``None`` forgets the current one so it is rebuilt from settings)."""
     global _kit
     _kit = kit
+    if kit is not None:
+        connect_kit(kit)
 
 
 def get_kit() -> Kit:
     global _kit
     if _kit is None:
         _kit = _build_kit(options())
+        connect_kit(_kit)
     return _kit
 
 

@@ -1,0 +1,17 @@
+{% if signed_in %}
+<form class="dpdp-preferences" method="post" action="{{ action }}">
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+  <input type="hidden" name="notice_version" value="{{ version }}">
+  <input type="hidden" name="locale" value="{{ locale }}">
+  {% for purpose in purposes %}
+  <p>
+    <label>
+      <input type="checkbox" name="purpose" value="{{ purpose.id }}"{% if purpose.granted %} checked{% endif %}>
+      {{ purpose.title }}{% if purpose.required %} <em>(required)</em>{% endif %}
+    </label>
+    {% if purpose.description %}<br><small>{{ purpose.description }}</small>{% endif %}
+  </p>
+  {% endfor %}
+  <button type="submit">Save choices</button>
+</form>
+{% endif %}

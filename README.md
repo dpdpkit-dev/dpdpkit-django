@@ -21,7 +21,9 @@ for class-based views. With `django.contrib.admin` installed you also get a read
 request queue with SLA countdowns, consent and audit ledger viewers, a retention monitor and a legal-hold list.
 Scheduled work runs from cron with the management commands `dpdp_run_retention`, `dpdp_verify_ledger` (exits
 non-zero when a ledger chain is broken) and `dpdp_export` (`--principal`, `--evidence-pack`, `--root-file`), or from
-Celery beat with the tasks in `dpdpkit.django.tasks` (`pip install "dpdpkit-django[celery]"`).
+Celery beat with the tasks in `dpdpkit.django.tasks` (`pip install "dpdpkit-django[celery]"`). For app-specific hooks
+there are the signals `consent_withdrawn`, `erasure_due` and `request_opened` (`dpdpkit.django.signals`), and for
+server-rendered sites the template tags `{% dpdp_notice %}` and `{% dpdp_preferences %}` (`{% load dpdpkit %}`).
 
 Until then, use [`dpdpkit-fastapi`](https://github.com/dpdpkit-dev/dpdpkit-fastapi) or the core library
 [`dpdpkit-core`](https://github.com/dpdpkit-dev/dpdpkit-core). Documentation:

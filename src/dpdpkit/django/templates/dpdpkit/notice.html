@@ -1,0 +1,18 @@
+<section class="dpdp-notice" lang="{{ locale }}" data-notice-version="{{ version }}">
+  <h2>{{ notice.title }}</h2>
+  {% if notice.body %}<p>{{ notice.body|linebreaksbr }}</p>{% endif %}
+  <ul class="dpdp-purposes">
+    {% for purpose in notice.purposes %}
+    <li>
+      <strong>{{ purpose.title }}</strong>{% if purpose.required %} <em>(required)</em>{% endif %}
+      {% if purpose.description %}<p>{{ purpose.description }}</p>{% endif %}
+      {% if purpose.data_items %}<p>Data: {{ purpose.data_items|join:", " }}</p>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% if notice.links %}
+  <ul class="dpdp-links">
+    {% for name, url in notice.links.items %}<li><a href="{{ url }}">{{ name }}</a></li>{% endfor %}
+  </ul>
+  {% endif %}
+</section>

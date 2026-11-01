@@ -6,6 +6,10 @@ first working release.
 ## Unreleased
 
 ### Added
+- Signals `consent_withdrawn`, `erasure_due` and `request_opened` (`dpdpkit.django.signals`), fed by the kit's event
+  bus and connected automatically for the configured kit. Template tags `{% dpdp_notice %}` and
+  `{% dpdp_preferences %}` (`{% load dpdpkit %}`) with overridable templates, and `record_preferences(request)` to
+  handle the preferences form.
 - Management commands `dpdp_run_retention`, `dpdp_verify_ledger` (fails with a non-zero exit when a chain is
   broken) and `dpdp_export` (`--principal` as JSON or HTML, `--evidence-pack` zip, `--root-file` to append the ledger
   root hash), plus Celery tasks `dpdpkit.django.run_retention`, `verify_ledger` and `export_root` in

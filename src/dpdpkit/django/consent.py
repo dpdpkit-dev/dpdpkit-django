@@ -17,6 +17,7 @@ from asgiref.sync import sync_to_async
 
 from django.http import HttpRequest, HttpResponse
 from dpdpkit.errors import ConsentRequired, DpdpkitError
+from dpdpkit.models import ConsentState, ConsentStatus
 
 from . import conf
 from .http import Unauthenticated, render_dpdpkit_error
@@ -36,6 +37,36 @@ def check_consent(request: HttpRequest, purposes: tuple[str, ...]) -> None:
     consent = conf.get_kit().consent
     for purpose in purposes:
         consent.require(principal, purpose)
+
+
+def record_preferences(request: HttpRequest) -> list[ConsentState]:
+    """Record the form posted by ``{% dpdp_preferences %}`` for the signed-in caller.
+
+    Ticked purposes are granted; unticked ones that were granted are withdrawn, the rest are recorded as denied.
+    Raises :class:`~dpdpkit.django.http.Unauthenticated` for anonymous callers."""
+    principal = conf.resolve_principal(request)
+    if principal is None:
+        raise Unauthenticated("sign in to use this endpoint")
+    kit = conf.get_kit()
+    ticked = set(request.POST.getlist("purpose"))
+    notice_version = int(request.POST["notice_version"]) if request.POST.get("notice_version", "").isdigit() else None
+    locale = request.POST.get("locale") or None
+    current = {s.purpose: s for s in kit.consent.state(principal)}
+    shown = {p.id for p in kit.registry.consent_purposes()}
+    decisions: dict[str, bool] = {}
+    for purpose in sorted(shown):
+        state = current.get(purpose)
+        granted = state is not None and state.status is ConsentStatus.GRANTED
+        if purpose in ticked:
+            if not granted:
+                decisions[purpose] = True
+        elif granted:
+            kit.consent.withdraw(principal, purpose, source="web")
+        elif state is None:
+            decisions[purpose] = False
+    if decisions:
+        kit.consent.record(principal, decisions, notice_version=notice_version, locale=locale, source="web")
+    return kit.consent.state(principal)
 
 
 def _denied(request: HttpRequest, exc: DpdpkitError, on_denied: OnDenied | None) -> HttpResponse:
