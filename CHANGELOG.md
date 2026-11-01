@@ -6,6 +6,10 @@ first working release.
 ## Unreleased
 
 ### Added
+- Management commands `dpdp_run_retention`, `dpdp_verify_ledger` (fails with a non-zero exit when a chain is
+  broken) and `dpdp_export` (`--principal` as JSON or HTML, `--evidence-pack` zip, `--root-file` to append the ledger
+  root hash), plus Celery tasks `dpdpkit.django.run_retention`, `verify_ledger` and `export_root` in
+  `dpdpkit.django.tasks` for Celery beat. Celery is optional (`dpdpkit-django[celery]`).
 - Django admin (registered when `django.contrib.admin` is installed): a request queue with a per-request SLA
   countdown (overdue and ceiling-breach flags), read-only consent and audit ledger viewers, a retention monitor
   (upcoming erasures, schedules needing attention) and a legal-hold list. All of it is read-only.

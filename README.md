@@ -19,11 +19,9 @@ plain JSON views otherwise), configured through `settings.DPDPKIT`, and consent 
 `@requires_consent("marketing")` for function views and `RequiresConsentMixin` (`consent_purposes = ("marketing",)`)
 for class-based views. With `django.contrib.admin` installed you also get a read-only compliance back-office: a
 request queue with SLA countdowns, consent and audit ledger viewers, a retention monitor and a legal-hold list.
-
-Planned:
-
-- Django admin: rights-request queue with SLA, read-only ledger viewer, retention monitor
-- Celery tasks and management commands (`dpdp_run_retention`, `dpdp_verify_ledger`, `dpdp_export`)
+Scheduled work runs from cron with the management commands `dpdp_run_retention`, `dpdp_verify_ledger` (exits
+non-zero when a ledger chain is broken) and `dpdp_export` (`--principal`, `--evidence-pack`, `--root-file`), or from
+Celery beat with the tasks in `dpdpkit.django.tasks` (`pip install "dpdpkit-django[celery]"`).
 
 Until then, use [`dpdpkit-fastapi`](https://github.com/dpdpkit-dev/dpdpkit-fastapi) or the core library
 [`dpdpkit-core`](https://github.com/dpdpkit-dev/dpdpkit-core). Documentation:
