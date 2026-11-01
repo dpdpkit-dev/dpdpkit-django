@@ -17,7 +17,8 @@ implementation of the dpdpkit `Repository` on the Django ORM (Postgres, MySQL, S
 contract as URLs and views (`include("dpdpkit.django.urls")`; a DRF viewset when `rest_framework` is installed,
 plain JSON views otherwise), configured through `settings.DPDPKIT`, and consent checks for views:
 `@requires_consent("marketing")` for function views and `RequiresConsentMixin` (`consent_purposes = ("marketing",)`)
-for class-based views.
+for class-based views. With `django.contrib.admin` installed you also get a read-only compliance back-office: a
+request queue with SLA countdowns, consent and audit ledger viewers, a retention monitor and a legal-hold list.
 
 Planned:
 

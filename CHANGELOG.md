@@ -6,6 +6,9 @@ first working release.
 ## Unreleased
 
 ### Added
+- Django admin (registered when `django.contrib.admin` is installed): a request queue with a per-request SLA
+  countdown (overdue and ceiling-breach flags), read-only consent and audit ledger viewers, a retention monitor
+  (upcoming erasures, schedules needing attention) and a legal-hold list. All of it is read-only.
 - `PersonalDataRegistry` (and the project-wide `dpdpkit.django.registry.registry`): register models with a
   per-field strategy of `delete`, `anonymise` (default placeholder or your own `callable(row)`) or `retain_legal`
   (needs a `retain_reason`), or delete whole rows. `erase(principal, purposes)` runs atomically and returns a report
