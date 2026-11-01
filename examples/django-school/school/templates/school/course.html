@@ -1,0 +1,6 @@
+{% extends "school/base.html" %}
+{% block body %}
+<h1>Maths 101</h1>
+<ul>{% for p in progress %}<li>{{ p.course }}: {{ p.score }}</li>{% empty %}<li>No quiz scores yet.</li>{% endfor %}</ul>
+<form method="post">{% csrf_token %}<input type="number" name="score" value="0"><button>Save quiz score</button></form>
+{% endblock %}

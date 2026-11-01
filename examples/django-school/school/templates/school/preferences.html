@@ -1,0 +1,6 @@
+{% extends "school/base.html" %}
+{% load dpdpkit %}
+{% block body %}
+<h1>Your privacy choices</h1>
+{% dpdp_preferences action="/privacy/preferences/" %}
+{% endblock %}

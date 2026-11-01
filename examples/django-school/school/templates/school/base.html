@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>{% block title %}Example School{% endblock %}</title></head>
+<body>
+<nav>
+  <a href="{% url 'index' %}">Home</a> · <a href="{% url 'course' %}">Course</a> ·
+  <a href="{% url 'preferences' %}">Privacy choices</a>
+</nav>
+{% block body %}{% endblock %}
+</body>
+</html>

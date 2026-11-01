@@ -1,0 +1,7 @@
+{% extends "school/base.html" %}
+{% load dpdpkit %}
+{% block body %}
+<h1>Example School</h1>
+<p><a href="{% url 'signup' %}">Create a learner account</a> · <a href="/login/">Sign in</a></p>
+{% dpdp_notice %}
+{% endblock %}

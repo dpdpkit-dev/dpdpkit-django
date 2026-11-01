@@ -51,7 +51,7 @@ only-include = ["src/dpdpkit/django"]
 sources = ["src"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/dpdpkit/django", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
+include = ["src/dpdpkit/django", "tests", "examples", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [tool.ruff]
 line-length = 120
@@ -65,8 +65,10 @@ select = ["E", "F", "W", "I", "B", "UP", "RUF"]
 "src/dpdpkit/django/models.py" = ["RUF012"]
 "src/dpdpkit/django/migrations/*.py" = ["RUF012"]
 
+"examples/*/school/migrations/*.py" = ["RUF012", "E501"]
+
 [tool.ruff.lint.isort]
-known-first-party = ["dpdpkit"]
+known-first-party = ["dpdpkit", "school"]
 
 [tool.mypy]
 python_version = "3.10"

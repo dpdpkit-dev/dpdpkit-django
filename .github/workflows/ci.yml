@@ -48,3 +48,8 @@ jobs:
             -e ".[dev]"
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
       - run: pytest -q
+      - name: Example app (examples/django-school)
+        working-directory: examples/django-school
+        env:
+          DATABASE_NAME: ":memory:"
+        run: pytest -q

@@ -1,0 +1,16 @@
+{% extends "school/base.html" %}
+{% load dpdpkit %}
+{% block body %}
+<h1>Consent for {{ learner.full_name }}</h1>
+<p>You are {{ learner.guardian_name }}, parent or guardian of {{ learner.full_name }}. Choose what you agree to on
+their behalf. Nothing is selected for you. You can come back to this page to change or withdraw a choice.</p>
+{% dpdp_notice %}
+<form method="post">{% csrf_token %}
+  <input type="hidden" name="notice_version" value="">
+  {% for p in purposes %}
+  <p><label><input type="checkbox" name="purpose" value="{{ p.id }}"{% if p.granted %} checked{% endif %}>
+  <strong>{{ p.title }}</strong></label><br>{{ p.description }}</p>
+  {% endfor %}
+  <button type="submit">Save choices</button>
+</form>
+{% endblock %}

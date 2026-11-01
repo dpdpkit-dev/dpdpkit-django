@@ -6,6 +6,10 @@ first working release.
 ## Unreleased
 
 ### Added
+- `examples/django-school`: an ed-tech demo with a child-account flow. Learners under 18 sign up with a guardian's
+  details and get no consent until the guardian opens a signed, expiring link and chooses for them (recorded under
+  the child's principal with `source="guardian"`; marketing and usage-analytics purposes are never offered). The
+  child is kept out of the course by `@requires_consent`, and erasure goes through `PersonalDataRegistry`.
 - Signals `consent_withdrawn`, `erasure_due` and `request_opened` (`dpdpkit.django.signals`), fed by the kit's event
   bus and connected automatically for the configured kit. Template tags `{% dpdp_notice %}` and
   `{% dpdp_preferences %}` (`{% load dpdpkit %}`) with overridable templates, and `record_preferences(request)` to

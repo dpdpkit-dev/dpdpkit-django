@@ -1,0 +1,9 @@
+{% extends "school/base.html" %}
+{% block body %}
+<h1>Consent needed</h1>
+{% if child %}
+<p>Your parent or guardian has not yet given consent for this account. Ask them to open the link we sent them.</p>
+{% else %}
+<p>Please make your <a href="{% url 'preferences' %}">privacy choices</a> first.</p>
+{% endif %}
+{% endblock %}

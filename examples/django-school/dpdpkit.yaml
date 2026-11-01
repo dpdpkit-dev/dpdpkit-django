@@ -1,0 +1,80 @@
+# dpdpkit configuration for the django-school demo (adapted from the ed-tech purpose template).
+# Purposes, notice wording and retention periods are decisions for you and your counsel.
+# dpdpkit records and enforces what you configure; it does not decide what is lawful.
+#
+# Children: DPDP Act s.9 and Rule 10 need verifiable consent from a parent or lawful guardian for learners
+# under 18, and s.9(3) bars tracking, behavioural monitoring and targeted advertising directed at children.
+# The demo keeps `product_improvement` and `marketing` off the guardian's form (see ADULT_ONLY in school/guardians.py).
+policy: dpdp-rules-2025.v1
+overlays: []
+
+contact:
+  name: Example Learning Pvt Ltd (demo)
+  email: privacy@school.example.in
+  rights_url: https://school.example.in/privacy/rights
+
+data_items:
+  - {id: learner_name, name: Learner's name}
+  - {id: date_of_birth, name: Date of birth, description: Used to tell whether a learner is a child}
+  - {id: parent_name, name: Parent or guardian's name}
+  - {id: parent_contact, name: Parent or guardian's email}
+  - {id: email, name: Email address}
+  - {id: school_grade, name: Class or grade}
+  - {id: course_progress, name: "Course progress, quiz answers and scores"}
+  - {id: device_usage, name: App usage and device information}
+
+processors:
+  - {id: mailer, name: Email delivery provider, country: IN}
+  - {id: analytics, name: Product analytics provider, country: IN}
+
+purposes:
+  - id: account
+    title: Create and run the learner's account
+    description: >-
+      We use these details to sign the learner in, confirm their age and, for learners under 18, record
+      the consent of their parent or guardian.
+    data_items: [learner_name, date_of_birth, email, parent_name, parent_contact]
+    required: true
+    retention: {trigger: last_activity, period_days: 1095}
+  - id: learning
+    title: Deliver courses and track progress
+    description: Lessons, quizzes and progress reports that are part of the course.
+    data_items: [learner_name, school_grade, course_progress]
+    required: true
+    retention: {trigger: last_activity, period_days: 1095}
+  - id: parent_updates
+    title: Send progress updates to the parent or guardian
+    description: Weekly progress reports.
+    data_items: [parent_name, parent_contact, course_progress]
+    processors: [mailer]
+    retention: {trigger: withdrawal, period_days: 0}
+  - id: product_improvement
+    title: Improve the app (adult learners only)
+    description: >-
+      Usage statistics to find and fix problems. Not used for learners under 18, whose activity must not be
+      tracked or monitored outside their courses.
+    data_items: [device_usage]
+    processors: [analytics]
+    retention: {trigger: withdrawal, period_days: 0}
+  - id: marketing
+    title: Tell you about new courses (adult learners only)
+    description: Occasional emails about new courses. Never targeted at learners under 18.
+    data_items: [email]
+    processors: [mailer]
+    retention: {trigger: withdrawal, period_days: 0}
+
+notice:
+  title: How we use your and your child's personal data
+  body: >-
+    Choose what you agree to. Nothing is selected for you, and you can change your choices at any time.
+    If the learner is under 18, a parent or guardian must make these choices.
+  links:
+    withdraw: https://school.example.in/privacy/preferences
+    rights: https://school.example.in/privacy/rights
+    board_complaint: https://school.example.in/privacy/board-complaint   # replace with the Board's complaint page
+  translations:
+    hi:
+      title: हम आपके और आपके बच्चे के व्यक्तिगत डेटा का उपयोग कैसे करते हैं
+      body: >-
+        चुनें कि आप किस बात से सहमत हैं। कुछ भी पहले से चुना नहीं गया है, और आप कभी भी अपनी पसंद बदल सकते हैं।
+        यदि शिक्षार्थी 18 वर्ष से कम आयु का है, तो माता-पिता या अभिभावक को ये विकल्प चुनने होंगे।

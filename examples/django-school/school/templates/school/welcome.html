@@ -1,0 +1,12 @@
+{% extends "school/base.html" %}
+{% block body %}
+<h1>Welcome, {{ learner.full_name }}</h1>
+{% if child %}
+<p>Because you are under 18, your parent or guardian ({{ learner.guardian_name }}) must make the privacy choices
+before you can start. We have sent them a link.</p>
+<p><em>Demo only: in a real site this link goes to {{ learner.guardian_email }} by email.</em>
+<a href="{{ link }}">{{ link }}</a></p>
+{% else %}
+<p>Choose your <a href="{% url 'preferences' %}">privacy choices</a> to start learning.</p>
+{% endif %}
+{% endblock %}
