@@ -304,6 +304,11 @@ def admin_update(c: Call, request_id: str) -> dict[str, Any]:
     return request_out(req, c.kit.now(), admin=True)
 
 
+@endpoint("get", "admin/consent/stats", role=Role.VIEWER)
+def consent_stats(c: Call) -> dict[str, Any]:
+    return {"items": [s.model_dump(mode="json") for s in c.kit.consent.stats()]}
+
+
 @endpoint("get", "admin/retention/preview", role=Role.VIEWER)
 def retention_preview(c: Call) -> dict[str, Any]:
     try:
