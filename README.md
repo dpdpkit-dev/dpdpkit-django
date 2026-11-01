@@ -12,9 +12,11 @@ Django app for [dpdpkit](https://github.com/dpdpkit-dev). It will add consent, v
 **Not usable yet.** Version 0.0.1a0 is an empty pre-release that reserves the name on PyPI. The first working
 release is planned for milestone v0.4 (planned for April 2027); the work is tracked as DJ-01 to DJ-10 in the dpdpkit task sheet.
 
+In the repository, unreleased: the `dpdpkit.django` app with models, migrations and `DjangoRepository`, an
+implementation of the dpdpkit `Repository` on the Django ORM (Postgres, MySQL, SQLite).
+
 Planned:
 
-- Models and migrations implementing the dpdpkit `Repository`
 - The dpdpkit REST contract as views (DRF viewsets when installed, plain JSON views otherwise)
 - `@requires_consent` decorator and class mixin
 - Django admin: rights-request queue with SLA, read-only ledger viewer, retention monitor
