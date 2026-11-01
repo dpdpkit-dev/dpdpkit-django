@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dpdpkit-django"
+dynamic = ["version"]
+description = "Django app for dpdpkit: DPDP consent, notices, rights requests, retention and an admin request queue."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "dpdpkit maintainers" }]
+keywords = ["dpdp", "django", "privacy", "consent", "india"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Framework :: Django",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Typing :: Typed",
+]
+dependencies = [
+  "dpdpkit-core>=0.1.0a1,<0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "mypy>=1.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/dpdpkit-dev/dpdpkit-django"
+Documentation = "https://dpdpkit-dev.github.io/dpdpkit-docs/dev/"
+Changelog = "https://github.com/dpdpkit-dev/dpdpkit-django/blob/main/CHANGELOG.md"
+
+[tool.hatch.version]
+path = "src/dpdpkit/django/__init__.py"
+
+# Ships only dpdpkit/django/; dpdpkit/__init__.py belongs to dpdpkit-core.
+[tool.hatch.build.targets.wheel]
+only-include = ["src/dpdpkit/django"]
+sources = ["src"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/dpdpkit/django", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["dpdpkit"]
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
