@@ -7,6 +7,8 @@ first working release.
 
 ### Added
 - `GET /admin/consent/stats` (viewer role): grants, denials and withdrawals per purpose and notice version.
+- `POST /guardian/verify/start` and `/guardian/verify/callback` answer `501 not_implemented` until guardian
+  verification ships, as the contract allows.
 - The dpdpkit conformance suite passes against `examples/django-school` (`school.asgi:application` with
   `DPDPKIT_CONFORMANCE=1`). CI now runs it, the unit tests and the example tests on Django 4.2 and 5.x against
   SQLite, Postgres and MySQL; `DATABASE_URL` selects the example's database, `DPDPKIT_TEST_DATABASE_URL` the unit

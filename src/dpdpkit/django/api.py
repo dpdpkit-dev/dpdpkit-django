@@ -342,6 +342,16 @@ def incident_report(c: Call, incident_id: str) -> dict[str, Any]:
     raise NotImplementedYet("incident report drafts ship in v0.5 (task CORE-24)")
 
 
+@endpoint("post", "guardian/verify/start", status=202)
+def guardian_start(c: Call) -> dict[str, Any]:
+    raise NotImplementedYet("guardian verification ships with dpdpkit.guardians (task CORE-25)")
+
+
+@endpoint("post", "guardian/verify/callback")
+def guardian_callback(c: Call) -> dict[str, Any]:
+    raise NotImplementedYet("guardian verification ships with dpdpkit.guardians (task CORE-25)")
+
+
 @endpoint("get", "admin/audit/export", role=Role.ADMIN)
 def audit_export(c: Call) -> HttpResponse:
     stamp = c.kit.now().strftime("%Y%m%dT%H%M%SZ")
