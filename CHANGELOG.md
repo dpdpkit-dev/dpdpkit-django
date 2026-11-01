@@ -6,6 +6,10 @@ first working release.
 ## Unreleased
 
 ### Added
+- `@requires_consent(*purposes)` for function views (sync or async) and `RequiresConsentMixin` for class-based
+  views. A caller who is not signed in gets 401 `unauthenticated`; one without consent gets 403 `consent_required`
+  with the purpose in `details`. Pass `on_denied=` (or override `consent_denied`) to answer differently, for example
+  with a redirect.
 - Django app `dpdpkit.django` (app label `dpdpkit`) with models and an initial migration for the consent ledger,
   audit trail, notices, rights requests, nominees, erasure schedules, legal holds, activity and deliveries. Table
   names match dpdpkit-fastapi's.

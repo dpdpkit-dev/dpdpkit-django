@@ -15,11 +15,12 @@ release is planned for milestone v0.4 (planned for April 2027); the work is trac
 In the repository, unreleased: the `dpdpkit.django` app with models, migrations and `DjangoRepository`, an
 implementation of the dpdpkit `Repository` on the Django ORM (Postgres, MySQL, SQLite), and the dpdpkit REST
 contract as URLs and views (`include("dpdpkit.django.urls")`; a DRF viewset when `rest_framework` is installed,
-plain JSON views otherwise), configured through `settings.DPDPKIT`.
+plain JSON views otherwise), configured through `settings.DPDPKIT`, and consent checks for views:
+`@requires_consent("marketing")` for function views and `RequiresConsentMixin` (`consent_purposes = ("marketing",)`)
+for class-based views.
 
 Planned:
 
-- `@requires_consent` decorator and class mixin
 - Django admin: rights-request queue with SLA, read-only ledger viewer, retention monitor
 - Celery tasks and management commands (`dpdp_run_retention`, `dpdp_verify_ledger`, `dpdp_export`)
 
