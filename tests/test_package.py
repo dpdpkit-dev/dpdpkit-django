@@ -3,7 +3,7 @@ from dpdpkit import django
 
 
 def test_version() -> None:
-    assert django.__version__ == "0.0.1a0"
+    assert django.__version__ == "0.1.0a2"
 
 
 def test_installs_alongside_dpdpkit_core() -> None:

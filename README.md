@@ -9,10 +9,10 @@ Django app for [dpdpkit](https://github.com/dpdpkit-dev). It will add consent, v
 
 ## Status
 
-**Not usable yet.** Version 0.0.1a0 is an empty pre-release that reserves the name on PyPI. The first working
-release is planned for milestone v0.4 (planned for April 2027); the work is tracked as DJ-01 to DJ-10 in the dpdpkit task sheet.
+**Alpha.** Version 0.1.0a2 is the first working pre-release (`pip install --pre dpdpkit-django`). APIs can still
+change between pre-releases.
 
-In the repository, unreleased: the `dpdpkit.django` app with models, migrations and `DjangoRepository`, an
+It includes the `dpdpkit.django` app with models, migrations and `DjangoRepository`, an
 implementation of the dpdpkit `Repository` on the Django ORM (Postgres, MySQL, SQLite), and the dpdpkit REST
 contract as URLs and views (`include("dpdpkit.django.urls")`; a DRF viewset when `rest_framework` is installed,
 plain JSON views otherwise), configured through `settings.DPDPKIT`, and consent checks for views:
@@ -27,8 +27,7 @@ server-rendered sites the template tags `{% dpdp_notice %}` and `{% dpdp_prefere
 A runnable ed-tech demo with a parent/guardian consent flow for child accounts is in
 [`examples/django-school`](examples/django-school).
 
-Until then, use [`dpdpkit-fastapi`](https://github.com/dpdpkit-dev/dpdpkit-fastapi) or the core library
-[`dpdpkit-core`](https://github.com/dpdpkit-dev/dpdpkit-core). Documentation:
+Documentation:
 https://dpdpkit-dev.github.io/dpdpkit-docs/dev/
 
 ## License
