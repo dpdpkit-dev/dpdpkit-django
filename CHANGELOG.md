@@ -5,6 +5,13 @@ first working release.
 
 ## Unreleased
 
+## 0.1.0a3 - 2026-11-03
+
+### Added
+- The admin dashboard, included in the wheel and served at `<prefix>/admin/ui/`. The version comes from
+  `admin-bundle.version`; a source checkout has a placeholder page.
+
+
 ## 0.1.0a2 - 2026-11-02
 
 ### Added

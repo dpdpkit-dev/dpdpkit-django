@@ -37,12 +37,16 @@ jobs:
             echo "dependencies not on the index yet; retrying in 30s ($attempt/20)"; sleep 30
           done
           .venv/bin/pytest -q
+      - name: Add the admin dashboard pinned in admin-bundle.version
+        run: python3 scripts/fetch_admin_bundle.py src/dpdpkit/django/admin_static
       - name: Build
         run: |
           uv build --out-dir dist
       - name: Tag must match package version
         run: |
           ls dist/dpdpkit_django-${{ steps.v.outputs.version }}-*.whl
+      - name: Wheel must contain the admin dashboard
+        run: python3 -m zipfile -l dist/dpdpkit_django-*.whl | grep -q 'admin_static/assets/'
       - name: SBOM
         uses: anchore/sbom-action@v0
         with:

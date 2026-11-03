@@ -24,6 +24,7 @@ non-zero when a ledger chain is broken) and `dpdp_export` (`--principal`, `--evi
 Celery beat with the tasks in `dpdpkit.django.tasks` (`pip install "dpdpkit-django[celery]"`). For app-specific hooks
 there are the signals `consent_withdrawn`, `erasure_due` and `request_opened` (`dpdpkit.django.signals`), and for
 server-rendered sites the template tags `{% dpdp_notice %}` and `{% dpdp_preferences %}` (`{% load dpdpkit %}`).
+The admin dashboard is served at `<prefix>/admin/ui/` (for example `/dpdp/admin/ui/`).
 A runnable ed-tech demo with a parent/guardian consent flow for child accounts is in
 [`examples/django-school`](examples/django-school).
 
